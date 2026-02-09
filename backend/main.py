@@ -10,7 +10,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
-from backend.routers import papers_router, chat_router, insight_router
+from backend.routers import  chat_router, insight_router
 
 app = FastAPI(
     title="IR-Trends API",
@@ -30,9 +30,6 @@ app.add_middleware(
 )
 
 logger.info("CORS中间件配置完成")
-# Include routers
-app.include_router(papers_router.router)
-logger.info("Papers路由注册完成")
 
 app.include_router(chat_router.router)
 logger.info("Chat路由注册完成")

@@ -4,12 +4,13 @@
 
 As illustrated in Figure~\ref{fig:interface}, InsightEval provides an intuitive web-based interface that guides users through the entire insight evaluation workflow. The left panel serves as the system homepage and input area, where users upload a target paper PDF along with its reference PDFs and initiate the analysis with a single click. Real-time progress indicators keep users informed as the system processes each stage. The right panel presents the results of each pipeline module in a step-by-step tabbed layout, enabling transparent and interactive exploration. Below, we outline the four key functionalities accessible through this interface:
 
-\begin{figure*}[!t]
-\centering
-    % TODO: Insert system architecture diagram
-    \includegraphics[width=1\textwidth]{figures/InsightEvaluation_05.png}
-\caption{The InsightEval user interface. The \textbf{left panel} displays the home page, featuring the evaluation pipeline overview and the user input interface for the target paper and reference list. The \textbf{right panel} demonstrates the step-by-step analysis results, ranging from opinion sentence extraction to the final insight report synthesis.}\label{fig:interface}
-\end{figure*}
+\begin{figure}[t]
+    \centering
+    % TODO: Insert interface screenshot
+    \fbox{\parbox{0.95\columnwidth}{\centering [Figure Placeholder: Interface Screenshot]\\ Left: Homepage with PDF upload and progress tracking\\ Right: Four-stage pipeline results}}
+    \caption{The InsightEval demonstration interface. Left: system homepage with paper and reference PDF upload. Right: step-by-step pipeline results including sentence extraction, evidence retrieval, multi-dimensional scoring, and report synthesis.}
+    \label{fig:interface}
+\end{figure}
 
 (1)~\textbf{Opinion Sentence Extraction.} The system first parses the uploaded PDF via MinerU~\cite{mineru} and segments the full text into individual sentences. It then detects citation markers (e.g., bracketed numbers such as [1] or author-year references) to distinguish cited sentences from contextual ones. Each sentence is classified as either a \textit{citation sentence} or a \textit{context sentence}, with statistics (total sentence count and citation count) displayed to provide an immediate overview of the paper's citation structure.
 

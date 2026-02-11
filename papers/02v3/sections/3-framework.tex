@@ -1,0 +1,53 @@
+\section{Evaluation Framework}
+\label{sec:framework}
+% 作者分工：闫强
+
+The InsightEval library implements a four-stage evaluation pipeline. Each stage is modular and can be independently configured or extended.
+
+\subsection{Stage 1: Opinion Sentence Extraction}
+The first stage processes the input PDF document to identify opinion sentences---statements that reflect the author's viewpoints, interpretations, or claims.
+
+\heading{PDF Parsing} We utilize MinerU~\cite{mineru} to extract structured content from academic PDFs, preserving section boundaries and inline citations. The parser identifies citation markers (e.g., ``[1]'', ``Smith et al.'') and associates them with the corresponding sentences.
+
+\heading{Sentence Classification} We categorize sentences into three types:
+\begin{itemize}
+    \item \textbf{Context sentences}: Background statements without citations or author opinions.
+    \item \textbf{Citation sentences}: Sentences containing references but merely summarizing prior work.
+    \item \textbf{Opinion sentences}: Sentences expressing the author's interpretation, critique, or synthesis, often marked by discourse markers (e.g., ``However'', ``We argue that'', ``Crucially'').
+\end{itemize}
+A fine-tuned classifier based on \ac{LLM} identifies opinion sentences with high precision for subsequent evaluation.
+
+\subsection{Stage 2: Evidence Retrieval via RAG}
+For each opinion sentence, we retrieve relevant supporting materials from the cited references using a \ac{RAG} approach.
+
+\heading{Reference Resolution} Citation markers are resolved to their corresponding reference entries. For each cited paper, we retrieve the abstract, introduction, and conclusion sections using the Semantic Scholar API~\cite{semanticscholar} or a local document repository.
+
+\heading{Semantic Retrieval} We encode the opinion sentence using a dense retriever (e.g., Sentence-BERT~\cite{reimers2019sentence}) and retrieve the most semantically similar passages from each cited reference. This produces evidence pairs $\{(o_i, E_i)\}$, where $o_i$ is an opinion sentence and $E_i$ is the set of retrieved evidence passages.
+
+\subsection{Stage 3: Multi-Dimensional Insight Scoring}
+This stage constitutes the core contribution of InsightEval. For each $(o_i, E_i)$ pair, we evaluate the insightfulness along three dimensions using an LLM-based scoring framework.
+
+\heading{Scoring Dimensions} We design prompts for an \ac{LLM} (e.g., GPT-4~\cite{openai2023gpt4} or DeepSeek-V3~\cite{deepseek2024}) to assess:
+
+\begin{enumerate}
+    \item \textbf{Depth Score} (1--5): Does the opinion provide deeper understanding than the evidence? A score of 1 indicates mere paraphrasing; 5 indicates fundamental new insights.
+    
+    \item \textbf{Breadth Score} (1--5): Does the opinion synthesize multiple sources? A score of 1 indicates reliance on a single source; 5 indicates comprehensive integration across references.
+    
+    \item \textbf{Height Score} (1--5): Does the opinion operate at a higher abstraction level? A score of 1 indicates phenomenon-level description; 5 indicates generalizable principles or hypotheses.
+\end{enumerate}
+
+\heading{Chain-of-Thought Prompting} We employ chain-of-thought prompting to elicit interpretable reasoning. The LLM first compares the opinion sentence with the retrieved evidence, then provides a rationale before assigning scores.
+
+\heading{Composite Score} The overall insight score for a sentence is:
+\begin{equation}
+    S_{\text{insight}}(o_i) = \alpha \cdot S_{\text{depth}} + \beta \cdot S_{\text{breadth}} + \gamma \cdot S_{\text{height}}
+\end{equation}
+where $\alpha$, $\beta$, and $\gamma$ are adjustable weights (default: equal weighting).
+
+\subsection{Stage 4: Paper-Level Report Synthesis}
+The final stage aggregates sentence-level scores into a comprehensive paper-level insight report.
+
+\heading{Score Aggregation} We compute summary statistics across all opinion sentences, including mean, median, and distribution of scores for each dimension.
+
+\heading{Report Generation} Using the paper's introduction section and aggregated scores, we prompt an LLM to generate a natural language summary characterizing the paper's overall insightfulness. The report highlights high-scoring and low-scoring opinion sentences with explanations.

@@ -1,11 +1,11 @@
-\section{Evaluation Framework}
+\section{System Architecture}
 \label{sec:framework}
 % 作者分工：闫强
 
-The InsightEval library implements a four-stage evaluation pipeline. Each stage is modular and can be independently configured or extended.
+The InsightEval framework implements a four-stage evaluation pipeline. Each stage is modular and can be independently configured or extended.
 
 \subsection{Stage 1: Opinion Sentence Extraction}
-The first stage processes the input PDF document to identify opinion sentences---statements that reflect the author's viewpoints, interpretations, or claims.
+The first stage processes the input PDF document to identify opinion sentences-statements that reflect the author's viewpoints, interpretations, or claims.
 
 \heading{PDF Parsing} We utilize MinerU~\cite{mineru} to extract structured content from academic PDFs, preserving section boundaries and inline citations. The parser identifies citation markers (e.g., ``[1]'', ``Smith et al.'') and associates them with the corresponding sentences.
 
@@ -51,3 +51,24 @@ The final stage aggregates sentence-level scores into a comprehensive paper-leve
 \heading{Score Aggregation} We compute summary statistics across all opinion sentences, including mean, median, and distribution of scores for each dimension.
 
 \heading{Report Generation} Using the paper's introduction section and aggregated scores, we prompt an LLM to generate a natural language summary characterizing the paper's overall insightfulness. The report highlights high-scoring and low-scoring opinion sentences with explanations.
+
+\subsection{Integration and User Interface}
+\label{sec:system}
+
+As illustrated in Figure~\ref{fig:interface}, InsightEval provides an intuitive web-based interface that guides users through the entire insight evaluation workflow. The key functionalities are accessible through the following views:
+
+\begin{figure*}[!t]
+\centering
+    \includegraphics[width=1\textwidth]{figures/InsightEvaluation_05.png}
+\caption{The InsightEval user interface. The \textbf{left panel} displays the home page with the evaluation pipeline overview and user input area. The \textbf{right panel} demonstrates the step-by-step analysis results.}\label{fig:interface}
+\end{figure*}
+
+(1)~\textbf{Homepage and Input}: Displays the evaluation pipeline overview and provides an upload interface for the target paper PDF and reference PDFs, with real-time progress tracking.
+
+(2)~\textbf{Sentence Extraction View}: Presents extracted sentences with citation detection statistics, classifying each as context or citation sentence for immediate structural overview.
+
+(3)~\textbf{Evidence Retrieval View}: Shows filtered viewpoint sentences paired with retrieved evidence passages, including source attribution and relevance indicators.
+
+(4)~\textbf{Scoring Dashboard}: Visualizes multi-dimensional scores (Depth, Breadth, Height) via radar charts for each viewpoint, accompanied by the LLM's chain-of-thought rationale.
+
+(5)~\textbf{Insight Report}: Generates a comprehensive paper-level report with an overall insightfulness score, executive summary, and structured strengths-and-weaknesses analysis.

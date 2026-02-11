@@ -24,7 +24,7 @@ export function Header() {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
               <FileText className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-semibold tracking-tight text-foreground">InsightLens</span>
+            <span className="text-xl font-semibold tracking-tight text-foreground">InsightEval</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">

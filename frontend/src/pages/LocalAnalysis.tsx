@@ -208,10 +208,10 @@ export function LocalAnalysisPage() {
                     <div className="mx-auto max-w-4xl text-center mb-10">
                         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
                             <BookOpen className="h-4 w-4" />
-                            Local Reference Analysis
+                            InsightEval
                         </div>
                         <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl mb-4 text-balance">
-                            Paper Insight Analysis with Local References
+                            Automated Insightfulness Evaluation for Scientific Papers
                         </h1>
                         <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
                             Upload your paper and specify a local folder containing reference PDFs (e.g. [1].pdf, [2].pdf).

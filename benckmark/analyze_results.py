@@ -5,9 +5,9 @@ Result Analysis Script
 生成可视化图表，并输出分析报告。
 
 Usage:
-    python benckmark/analyze_results.py \
-        --surge_dir benckmark/results/surge \
-        --autosurvey_dir benckmark/results/autosurvey \
+    python evaluation/analyze_results.py \
+        --surge_dir evaluation/results/surge \
+        --autosurvey_dir evaluation/results/autosurvey \
         --output_dir papers/figures
 """
 
@@ -204,7 +204,7 @@ def plot_comparison_bar(
     output_path: str,
 ):
     """对比柱状图: Human vs AI, 含误差线和显著性标注"""
-    fig, ax = plt.subplots(figsize=(6, 4))
+    fig, ax = plt.subplots(figsize=(4.5, 3))
 
     dims = list(DIM_MAP.keys())
     dim_labels = [DIM_MAP[d] for d in dims]
@@ -242,7 +242,8 @@ def plot_comparison_bar(
     ax.set_xticks(x)
     ax.set_xticklabels(dim_labels)
     ax.set_ylim(0, 5.5)
-    ax.legend(frameon=True, fancybox=True, shadow=False, edgecolor="#cccccc")
+    ax.legend(frameon=True, fancybox=True, shadow=False, edgecolor="#cccccc",
+              ncol=2, loc="upper center", columnspacing=2.0)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
@@ -668,9 +669,9 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="InsightEval 结果统计分析")
-    parser.add_argument("--surge_dir", type=str, default="benckmark/results/surge",
+    parser.add_argument("--surge_dir", type=str, default="evaluation/results/surge",
                         help="SurGE (Human) 结果目录")
-    parser.add_argument("--autosurvey_dir", type=str, default="benckmark/results/autosurvey",
+    parser.add_argument("--autosurvey_dir", type=str, default="evaluation/results/autosurvey",
                         help="Autosurvey (AI) 结果目录")
     parser.add_argument("--output_dir", type=str, default="papers/figures",
                         help="输出目录 (图表 + 报告)")

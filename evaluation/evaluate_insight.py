@@ -469,13 +469,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--base_url",
         type=str,
-        default="https://aicloud.oneainexus.cn:30013/inference/aicloud-yanqiang/qwen3-32b-server/v1",
+        default="https://api.deepseek.com",
         help="LLM API base URL",
     )
     parser.add_argument(
         "--model_name",
         type=str,
-        default="Qwen/Qwen3-32B",
+        default="deepseek-v4-pro",
         help="模型名称",
     )
     parser.add_argument(

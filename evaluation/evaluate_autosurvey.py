@@ -126,7 +126,6 @@ async def fetch_papers_for_references(
 
     return paper_info_map
 
-
 # ============================================================
 # 2. Markdown Section Parser
 # ============================================================
